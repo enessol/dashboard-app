@@ -17,7 +17,7 @@ const Dashboard = () => {
         </Grid>
       </Grid>
       <Grid xs={12} marginY={2}>
-        <Paper className={scss.dataCard}>xs=8</Paper>
+        <Paper className={scss.dataCard}>xs=12</Paper>
       </Grid>
     </Box>
   );
