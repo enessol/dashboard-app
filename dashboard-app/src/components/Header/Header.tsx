@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material";
+import { Avatar, useMediaQuery } from "@mui/material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -13,8 +13,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import ThemeToggleButton from "../ThemeToggleButton/ThemeToggleButton";
 
-export default function Header() {
+export type HeaderProps = {
+  ColorModeContext: React.Context<{ toggleColorMode: () => void }>;
+};
+
+export default function Header(props: HeaderProps) {
+  const { ColorModeContext } = props;
   const { data: session } = useSession();
   const userProfileImg = session?.user?.image as string;
 
@@ -41,6 +47,8 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const tabletCheck = useMediaQuery("(min-width: 768px)");
 
   return (
     <>
@@ -132,9 +140,12 @@ export default function Header() {
                 </Button>
               ))}
             </Box>
-            <Box sx={{ paddingRight: 5 }}>
-              <Typography> Signed in as {session?.user?.email} </Typography>
-            </Box>
+            {tabletCheck && (
+              <Box sx={{ paddingRight: 5 }}>
+                <Typography> Signed in as {session?.user?.email} </Typography>
+              </Box>
+            )}
+            <ThemeToggleButton ColorModeContext={ColorModeContext} />
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open profile settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
